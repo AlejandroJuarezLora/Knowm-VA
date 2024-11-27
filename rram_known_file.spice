@@ -1,0 +1,11 @@
+*Documento para el memrisotr de known
+
+.subckt rram_known  TE BE
+N1 TE BE rram_known_model
+.ends 
+
+.model rram_known_model rram_known_va 
+
+.control
+pre_osdi /home/alex/Desktop/EDA/Barron_mem/rram_known_file.osdi
+.endc 

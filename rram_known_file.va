@@ -1,0 +1,39 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module rram_known_va(t, b);
+	inout t, b;
+	electrical t, b, m;
+	parameter real Rs = 46250 from (0:inf);
+	parameter real Ron = 13e3 from (0:inf);
+	parameter real Roff = 460e3 from (0:inf);
+	parameter real Von = 0.2 from (0:inf);
+	parameter real Voff = -0.1 from (-inf:inf);
+	parameter real tau = 6e-5  from (0:inf);
+	parameter real phi = 0.88  from (0:inf);
+	parameter real Ar = 10e-7  from (0:inf);
+	parameter real Af = 10e-7  from (0:inf);
+	parameter real Br = 8  from (0:inf);
+	parameter real Bf = 8  from (0:inf);
+	parameter real GMIN = 1e-12 from (0:inf);
+	parameter real k = 1.3e-23 from (0:inf);
+	parameter real q = 1.6e-19 from (0:inf);
+	parameter real T = 108.5 from (0:inf); //temperatura en grados kelvin
+	parameter real eps = q / (k*T) from (0:inf);
+	real dxdt, dqdt, x, Vm, Gm, Im, Rm, Is, It;
+   
+	analog begin
+		// x = V(m,b);  //voltaje entre terminales del memristor
+		x = V(t,b) * (Rm / (Rm + Rs));
+		Vm = x;
+		Gm = ((x/Ron)+((1-x)/Roff)); //conductancia del memristor
+		Rm = 1 /Gm; 	//Resitencia del memristor
+		// Vm = V(t,b) * (Rm / (Rm + Rs)); //el voltaje del memristor, de acuerdo al divisor de voltaje
+		Im = V(t,b) / (Rm + Rs); //It corriente de todo el circuito
+		Is = Af * exp(Bf * Vm) - Ar * exp(Br*Vm); //suma de corrientes dentro del diodo
+		dxdt = (1/tau) * ((1/(1+exp(-eps*(Vm - Von))))*(1-x) - (1 - (1/(1+(1+exp(-eps*(Vm-Voff))))))*x);
+		dqdt = phi * Im + (1 - phi) * Is;
+		I(m, b) <+ ddt(dxdt);
+		I(t, b) <+ ddt(dqdt);
+	end
+endmodule

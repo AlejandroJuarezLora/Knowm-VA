@@ -1,0 +1,29 @@
+v {xschem version=3.4.6RC file_version=1.2
+}
+G {}
+K {type=rram_known
+format="@spiceprefix @name @pinlist @symname"
+template="name=x1
+model=rram_known
+spiceprefix=X
+"
+}
+V {}
+S {}
+E {}
+L 4 220 -30 250 -30 {}
+L 4 220 -30 220 20 {}
+L 4 220 20 250 20 {}
+L 4 250 -30 250 20 {}
+L 7 230 -50 230 -30 {}
+L 7 230 20 230 40 {}
+B 4 220 -30 250 -20 {}
+B 5 227.5 -52.5 232.5 -47.5 {name=TE dir=inout}
+B 5 227.5 37.5 232.5 42.5 {name=BE dir=inout}
+A 4 235 -15 7.071067811865476 135 360 {}
+A 4 235 5 7.071067811865476 315 360 {}
+T {@symname} 256 -6 0 0 0.3 0.3 {}
+T {@name} 255 -32 0 0 0.2 0.2 {}
+T {TE} 225 -54 0 1 0.2 0.2 {}
+T {BE} 225 36 0 1 0.2 0.2 {}
+T {known} 260 -20 0 0 0.3 0.3 {}
